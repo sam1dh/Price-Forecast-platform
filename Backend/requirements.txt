@@ -1,0 +1,9 @@
+django>=5.2
+djangorestframework>=3.15
+django-cors-headers>=4.4
+drf-spectacular>=0.27
+pandas>=2.2
+numpy>=1.26
+scipy>=1.12
+statsmodels==0.15.*
+gunicorn>=22

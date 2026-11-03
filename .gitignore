@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Django data: local SQLite db, fitted model artifacts, secrets
+Backend/data/app.db
+Backend/data/artifacts/
+*.sqlite3
+Backend/.env
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+frontend/.env*
+
+# System / editor
+.DS_Store
