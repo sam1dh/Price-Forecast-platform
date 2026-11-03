@@ -2,6 +2,11 @@
 
 **A 12-month price forecast, from a notebook with a hidden data problem to a deployed Django service with a live dashboard.**
 
+> **Live demo**
+> - Dashboard: https://frontend-psi-seven-51.vercel.app
+> - API: https://price-forecast-api-m0pp.onrender.com (free plan — first request after ~15 min idle may take ~50 s to wake; retry once)
+> - API docs: https://price-forecast-api-m0pp.onrender.com/api/docs/
+
 ![Forecast](docs/images/forecast.png)
 
 | | |
