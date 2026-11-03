@@ -14,8 +14,9 @@ const money = (v: string) => Number(String(v).replace(/[, ]/g, ""));
 
 export default function ScenarioForm({ dataAsOf }: { dataAsOf: string | null }) {
   const router = useRouter();
-  const [one, setOne] = useState("");
-  const [two, setTwo] = useState("");
+  // Pre-filled as in the design's mock (17,000 / 17,200).
+  const [one, setOne] = useState("17,000");
+  const [two, setTwo] = useState("17,200");
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
