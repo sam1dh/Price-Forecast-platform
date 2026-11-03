@@ -44,6 +44,17 @@ const options = typeof window === "undefined"
   : {};
 
 /** None-on-failure wrappers, so pages never crash if the backend is down. */
+export function getServerTime():
+  | { iso: string; tzo: number; ms: number }
+  | null {
+  if (typeof window !== "undefined") return null;
+  try {
+    const d = new Date();
+    return { iso: d.toISOString(), tzo: -d.getTimezoneOffset(), ms: d.getMilliseconds() };
+  } catch {
+    return null;
+  }
+}
 export async function getHealthSummary(): Promise<HealthSummary | null> {
   try {
     const r = await apiClient.GET("/api/v1/health/summary/", options);
