@@ -1,0 +1,24 @@
+# Render Blueprint — deploys the Django forecast API as a free web service.
+# Important: SQLite lives on the instance's ephemeral disk on the free plan,
+# but entrypoint.sh re-migrates and re-seeds from the CSV on every boot,
+# so a restart just gives you a fresh, fully-populated database.
+
+services:
+  - type: web
+    name: price-forecast-api
+    runtime: python
+    rootDir: Backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: sh entrypoint.sh
+    healthCheckPath: /api/v1/ready/
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.x"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "0"
+      # The Vercel dashboard, so the API answers its browser requests.
+      - key: FRONTEND_ORIGIN
+        value: https://frontend-psi-seven-51.vercel.app
