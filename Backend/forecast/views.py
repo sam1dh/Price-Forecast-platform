@@ -168,6 +168,13 @@ MODEL_COMPARISON_RMSES = {
 }
 
 
+class _ComparisonRow(serializers.Serializer):
+    name = serializers.CharField()
+    display_name = serializers.CharField()
+    rmse = serializers.FloatField()
+    selected = serializers.BooleanField()
+
+
 @extend_schema(operation_id="model_compare", responses=inline_serializer("ModelCompareResponse", {
     "metric": serializers.CharField(),
     "active": inline_serializer("ActiveModel", {
@@ -175,14 +182,7 @@ MODEL_COMPARISON_RMSES = {
         "mean_12step_rmse": serializers.FloatField(allow_null=True),
         "rolling_origin": serializers.JSONField(allow_null=True),
     }),
-    "rows": [
-        inline_serializer("ComparisonRow", {
-            "name": serializers.CharField(),
-            "display_name": serializers.CharField(),
-            "rmse": serializers.IntegerField(),
-            "selected": serializers.BooleanField(),
-        })
-    ],
+    "rows": _ComparisonRow(many=True),
     "lead_vs_next_pct": serializers.FloatField(allow_null=True),
 }))
 @api_view(["GET"])
@@ -292,13 +292,22 @@ class PredictRequest(serializers.Serializer):
     persist = serializers.BooleanField(default=False)
 
 
+class _PredictResponse(serializers.Serializer):
+    run_id = serializers.IntegerField()
+    origin_month = serializers.DateField()
+    last_observed_price = serializers.FloatField(allow_null=True)
+    horizon = serializers.IntegerField()
+    trigger = serializers.CharField()
+    points = _ForecastPoint(many=True)
+    summary = _RUN_SUMMARY
+    meta = _Meta()
+    scenario_applied = ScenarioItem(many=True, allow_null=True)
+    baseline = inline_serializer("Baseline", {"points": _ForecastPoint(many=True)})
+
+
 @extend_schema(
     request=PredictRequest,
-    responses=inline_serializer("PredictResponse", {
-        **_RUN_FIELDS,
-        "scenario_applied": ScenarioItem(many=True),
-        "baseline": inline_serializer("Baseline", {"points": _ForecastPoint(many=True)}),
-    }),
+    responses=_PredictResponse,
 )
 @api_view(["POST"])
 def predict(request):
