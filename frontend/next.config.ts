@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Docker: emit the self-contained server for the multi-stage Dockerfile. */
+  output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
 };
